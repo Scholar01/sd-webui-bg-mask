@@ -34,9 +34,10 @@ class BackgroundMaskScript(scripts.Script):
 
     def ui(self, is_img2img):
         id_part = self.id_part
-        with InputAccordion(False, label=self.title(), elem_id=f"{id_part}_main_accordion") as enable_i2irembg:
+        with gr.Accordion(label=self.title(), elem_id=f"{id_part}_main_accordion"):
             with FormRow():
                 model = gr.Dropdown(choices=models, value="u2net", show_label=False)
+                enable_i2irembg = gr.Checkbox(label="Enable", value=False)
                 return_mask = gr.Checkbox(label="Return mask", value=False)
                 alpha_matting = gr.Checkbox(label="Alpha matting", value=False)
 
@@ -60,7 +61,6 @@ class BackgroundMaskScript(scripts.Script):
         预处理
         """
         enable_i2irembg, model, return_mask, alpha_matting, alpha_matting_erode_size, alpha_matting_foreground_threshold, alpha_matting_background_threshold, *more = args
-
         if not enable_i2irembg:
             return
 
@@ -87,8 +87,8 @@ class BackgroundMaskScript(scripts.Script):
         p.inpaint_full_res_padding = 32  # 预留像素
 
         p.inpainting_mask_invert = 0  # 蒙版模式 0=重绘蒙版内容
-        p.inpainting_fill = 0  # 蒙版蒙住的内容 0=填充
-        p.inpaint_full_res = 1  # 重绘区域 0 = 全图 1=仅蒙版区域
+        p.inpainting_fill = 1  # 蒙版蒙住的内容 0=填充
+        p.inpaint_full_res = 0  # 重绘区域 0 = 全图 1=仅蒙版区域
 
     def postprocess(self, p, processed, *args):
         enable_i2irembg, model, return_mask, alpha_matting, alpha_matting_erode_size, alpha_matting_foreground_threshold, alpha_matting_background_threshold, *more = args
