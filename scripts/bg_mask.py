@@ -34,7 +34,7 @@ class BackgroundMaskScript(scripts.Script):
 
     def ui(self, is_img2img):
         id_part = self.id_part
-        with gr.Accordion(label=self.title(), elem_id=f"{id_part}_main_accordion"):
+        with gr.Accordion(label=self.title(), elem_id=f"{id_part}_main_accordion",open=False):
             with FormRow():
                 model = gr.Dropdown(choices=models, value="u2net", show_label=False)
                 enable_i2irembg = gr.Checkbox(label="Enable", value=False)
